@@ -1,0 +1,23 @@
+{
+  "name": "se2023",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./inferenta/inferenta.js",
+  "scripts": {
+    "start": "node ./inferenta/inferenta.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Melkor55/SE2023.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Melkor55/SE2023/issues"
+  },
+  "homepage": "https://github.com/Melkor55/SE2023#readme",
+  "dependencies": {
+    "node-rules": "^9.1.1"
+  }
+}
