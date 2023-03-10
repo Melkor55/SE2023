@@ -165,7 +165,7 @@ var rules = [
 /*as you can see above we removed the priority 
 and on properties for this example as they are optional.*/ 
 
-var UserChoices = {
+var userChoices = {
     "Type": "Petrol",
     "Brand": "BMW",
     "Model": "XM G09",
@@ -181,7 +181,7 @@ var UserChoices = {
 var R = new RuleEngine(rules);
  
 //Now pass the fact on to the rule engine for results
-R.execute(UserChoices,function(result){ 
+R.execute(userChoices,function(result){ 
     // console.log("test -> ", test);
     if(result.result) 
         console.log("\n-----Car[s] Found----\n"); 
@@ -189,3 +189,11 @@ R.execute(UserChoices,function(result){
         console.log("\n-----Car[s] Not Found----\n");
     
 });
+
+const inferenta = (userChoices, carList) => {
+    
+}
+
+module.exports = {
+    inferenta: inferenta,
+}
