@@ -5,16 +5,16 @@ const {filterPropertyEquals, filterPropertyByInterval, filterPropertyByArray} = 
 const {checkIfElementWithPropertyExists, checkIfElementWithPropertyExistsInInterval, checkIfElementWithPropertyExistsInArray} = require("./helperFunctions/checkPropertiesFunctions.js");
 
 var properties = [
-    "Type",
-    "Brand",
-    "Model",
-    "Version",
-    "Year",
-    "Option",
-    "Price",
-    "Color",
-    "BatteryCapacity",
-    "Horsepower",
+    "Type",             //  array[] - multiple options
+    "Brand",            //  array[] - multiple options
+    "Model",            //  string - 1 option
+    "Version",          //  string - 1 option
+    "Year",             //  object{min: value, max: value} - range
+    "Option",           //  array[] - multiple options - ?
+    "Price",            //  object{min: value, max: value} - range
+    "Color",            //  array[] - multiple options
+    "BatteryCapacity",  //  object{min: value, max: value} - range
+    "Horsepower",       //  object{min: value, max: value} - range
 ]
 
 const cars = [ // https://www.ultimatespecs.com/car-specs#T
