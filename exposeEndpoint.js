@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const inferenta = require('./inferenta/inferenta');
+const inferenta = require("./inferenta/inferenta.js");
 router.route('/inferenta').get((request, response) => {
     response.send('use POST request')
 });

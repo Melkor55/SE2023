@@ -10,7 +10,7 @@ const checkIfBrandExists = (brandName) => {
 
 const checkIfElementWithPropertyExists = (property, value) => {
     let flag = false;
-    // console.log(value) 
+    console.log(value) 
     filteredCars.forEach(car => {
         // console.log(car[property] + " - " + value) 
         if(car[property] === value)
@@ -22,6 +22,7 @@ const checkIfElementWithPropertyExists = (property, value) => {
 const checkIfElementWithPropertyExistsInInterval = (property, valueInterval) => {
     let flag = false;
     const {min, max} = valueInterval;
+    console.log(min + " : " + max);
     filteredCars.forEach(car => {
         // console.log(car[property] + " - " + value) 
         if(min <= car[property] && car[property] <= max)
@@ -32,6 +33,7 @@ const checkIfElementWithPropertyExistsInInterval = (property, valueInterval) => 
 
 const checkIfElementWithPropertyExistsInArray = (property, valueArray) => {
     let flag = false;
+    console.log(valueArray);
     filteredCars.forEach(car => {
         // console.log(car[property] + " - " + value) 
         valueArray.forEach(value => {

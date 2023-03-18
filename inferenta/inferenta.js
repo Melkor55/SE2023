@@ -21,87 +21,6 @@ var properties = [
     "Horsepower",       //  object{min: value, max: value} - range
 ]
 
-const cars = [ // https://www.ultimatespecs.com/car-specs#T
-    {
-        "Id": 1,
-        "Type": "Electric",
-        "Brand": "Tesla",
-        "Model": "S",
-        "Version": "Plaid",
-        "Year": "2021",
-        "Option": "Basic",
-        "Price": 137990,
-        "Color": "Black",
-        "BatteryCapacity": 95, //kWh
-        "Horsepower": 1020, //HP
-    },
-    {
-        "Id": 2,
-        "Type": "Diesel",
-        "Brand": "Toyota",
-        "Model": "Hilux 2021 Double-Cab",
-        "Version": "2.8 D-4D 4WD GR Sport",
-        "Year": "2022",
-        "Option": "Basic",
-        "Price": 30305, //euro
-        "Color": "Black",
-        "BatteryCapacity": null, //kWh
-        "Horsepower": 204, //HP
-    },
-    {
-        "Id": 3,
-        "Type": "Petrol",
-        "Brand": "Lexus",
-        "Model": "RX AL20 2020",
-        "Version": "350 FWD",
-        "Year": "2019",
-        "Option": "Basic",
-        "Price": 45175, //euro
-        "Color": "Black",
-        "BatteryCapacity": null, //kWh
-        "Horsepower": 294, //HP
-    },
-    {
-        "Id": 4,
-        "Type": "Petrol",
-        "Brand": "Ferrari",
-        "Model": "F8 Spider",
-        "Version": "3.9 V8",
-        "Year": "2020",
-        "Option": "Basic",
-        "Price": 285377, //euro
-        "Color": "Yellow",
-        "BatteryCapacity": null, //kWh
-        "Horsepower": 720, //HP
-    },
-    {
-        "Id": 5,
-        "Type": "Petrol",
-        "Brand": "Dacia",
-        "Model": "1310",
-        "Version": "First gen 1.4L",
-        "Year": "1979",
-        "Option": "Basic",
-        "Price": 5000, //euro
-        "Color": "Red",
-        "BatteryCapacity": null, //kWh
-        "Horsepower": 56, //HP
-    },
-    {
-        "Id": 6,
-        "Type": "Hybrid",
-        "Brand": "BMW",
-        "Model": "XM G09",
-        "Version": "",
-        "Year": "2023",
-        "Option": "Basic",
-        "Price": 170051, //euro
-        "Color": "Obsidian",
-        "BatteryCapacity": null, //kWh
-        "Horsepower": 653, //HP
-    },
-]
-
 global.filteredCars;// = cars;
 global.resultCar;
 global.test = new Array();
@@ -353,7 +272,7 @@ const inferenta = async (userChoices, carList) => {
     filteredCars = new Array();
     filteredCars = await getDB();
 
-    console.table(filteredCars.sort((a, b) => a.Body.localeCompare(b.Body)));
+    // console.table(filteredCars.sort((a, b) => a.Body.localeCompare(b.Body)));
     resultCar = await applyRules(userChoices);
     // console.log(resultCar);
     return resultCar;

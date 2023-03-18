@@ -14,7 +14,6 @@ const filterByBrand = (brandName) => {
 }
 
 const filterPropertyEquals = (property, value) => {
-    console.log(value)
     const temp = filteredCars.filter(car => { return car[property] === value})
     // console.log(temp);  test = temp;
     console.table(temp.sort((a, b) => a.Body.localeCompare(b.Body)));
@@ -24,7 +23,6 @@ const filterPropertyEquals = (property, value) => {
 
 const filterPropertyByInterval = (property, valueInterval) => {
     const {min, max} = valueInterval;
-    console.log(min + " : " + max);
     const temp = new Array()
     filteredCars.forEach(car => {
         // console.log(car[property] + " - " + value) 
@@ -39,7 +37,6 @@ const filterPropertyByInterval = (property, valueInterval) => {
 
 const filterPropertyByArray = (property, valueArray) => {
     const temp = new Array()
-    console.log(valueArray);
     filteredCars.forEach(car => {
         // console.log(car[property] + " - " + value) 
         valueArray.forEach(value => {
