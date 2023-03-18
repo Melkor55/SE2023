@@ -10,9 +10,7 @@ const checkIfBrandExists = (brandName) => {
 
 const checkIfElementWithPropertyExists = (property, value) => {
     let flag = false;
-    console.log(value) 
-    let x = (1, 1, 1)
-    console.log(x[0])
+    // console.log(value) 
     filteredCars.forEach(car => {
         // console.log(car[property] + " - " + value) 
         if(car[property] === value)

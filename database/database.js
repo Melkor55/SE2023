@@ -3,7 +3,7 @@ var axios = require('axios');
 const Car = require('../entity/Car');
 
 let databaseName = "cars";
-let DBcars = new Array();
+global.DBcars = new Array();
 let carsForDB = new Array();
 global.carProperties = [
     "Brand",            //  array[] - multiple options
@@ -13,8 +13,8 @@ global.carProperties = [
     "Type",             //  array[] - multiple options
     "TransmissionType",  //  string - 1 option
     "Horsepower",       //  object{min: value, max: value} - range
-    "Seats",            //  string - 1 option
-    "Dors",            //  string - 1 option
+    "Seats",            //  string/int - 1 option
+    "Dors",            //  string/int - 1 option
     "Price",            //  object{min: value, max: value} - range       
 ];
 
@@ -109,24 +109,31 @@ let getCars = async () => {   //  api source -> https://www.carqueryapi.com/docu
 }
 // getCars();  // only to fill the database
 
-let db = new sqlite3.Database(`./${databaseName}.db`, async (err) => {
-    console.log(err)
-    if (!err) {
-        createTables(db);
-        // while(i < carBrands.length)
-        await getCars();
-        carsForDB.forEach((car) => insertValuesIntoDB(db,car));
-        getCarsFromDB(db);
-
-        getCarsFieldFromDB(db, carFieldArray, "Body")
-        return;
-    } else if (err) {
-        console.log("Getting error " + err);
-        exit(1);
-    } else {
-        getCarsFromDB(db);
-    }    
-});
+let getDB = async () => {
+    console.log("cars -> 1")
+    // DBcars = new Array();
+    // DBcars = new (Array);
+    db = new sqlite3.Database(`./database/${databaseName}.db`, async (err) => {
+        console.log(err)
+        if (!err) {
+            createTables(db);
+            // while(i < carBrands.length)
+            await getCars();
+            carsForDB.forEach((car) => insertValuesIntoDB(db,car));
+            // await getCarsFromDB(db);
+            //console.table(DBcars.sort((a, b) => a.Body.localeCompare(b.Body)));
+            getCarsFieldFromDB(db, carFieldArray, "TransmissionType")
+            return;
+        } else if (err) {
+            console.log("Getting error " + err);
+            exit(1);
+        } else {
+            getCarsFromDB(db);
+        }    
+    });
+    // const temp = await getCarsFromDB(db);
+    return await getCarsFromDB(db);
+} 
 
 function createTables(newdb) {
     var createTable = `create table IF NOT EXISTS ${databaseName} (
@@ -174,22 +181,33 @@ function insertValuesIntoFieldInDB(db, field, value){
             `);
 }
 
-function getCarsFromDB(db) {
-    db.all(`select * from ${databaseName};`, [], (err, rows) => {
-        if(rows)
-            rows.forEach(car => {   // pushes the Cars from the database into the array after going through a few filters
-                // console.log(row);
-                if(car.Type.includes("Flex-Fuel") )
-                    car.Type = "Flex-Fuel";
-                else if(car.Type.includes("Gasoline") || car.Type.includes("Unleaded"))
-                    car.Type = "Gasoline";
-                    if(car.Type.includes("Hybrid") )
-                    car.Type = "Hybrid";    
-                DBcars.push(car)
-            });
-        else
-            exit(1);
-        console.table(DBcars.sort((a, b) => a.Body.localeCompare(b.Body)));
+async function getCarsFromDB(db) {
+    DBcars = new Array();
+    return new Promise((resolve, reject) => { 
+        db.all(`select * from ${databaseName};`, [], (err, rows) => {
+            if(rows)
+            {
+                rows.forEach(car => {   // pushes the Cars from the database into the array after going through a few filters
+                    // console.log(row);
+                    if(car.Type.includes("Flex-Fuel") )
+                        car.Type = "Flex-Fuel";
+                    else if(car.Type.includes("Gasoline") || car.Type.includes("Unleaded"))
+                        car.Type = "Gasoline";
+                        if(car.Type.includes("Hybrid") )
+                        car.Type = "Hybrid";    
+                    DBcars.push(car);
+                });
+                resolve(DBcars);
+                
+            }    
+            else
+            {
+                reject(err);
+                exit(1);
+            }
+               
+            // console.table(DBcars.sort((a, b) => a.Body.localeCompare(b.Body)));
+        });
     });
 }
 
@@ -209,6 +227,10 @@ function getCarsFieldFromDB(db, array, field) {     // to get all the options a 
         // console.table(array);
         console.dir(array, {'maxArrayLength': null});
         
-    }); 
-   
+    });    
+}
+// getDB()
+module.exports = {
+    getDB: getDB,
+    DBcars: DBcars,
 }
