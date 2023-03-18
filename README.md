@@ -9,7 +9,7 @@
 
 # **`npm start`** to run whole aplication(the backend)
 
-- ## the *endpoint* for the app is : <localhost:3005/inferenta>
+- ## the *endpoint* for the app is : <[localhost:3005/inferenta](http://localhost:3005/inferenta/)>
 ---
 
 > ## the aplication aims to find the best result for the given filters, meaning if will  
