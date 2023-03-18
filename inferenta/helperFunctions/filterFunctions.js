@@ -9,11 +9,17 @@ const filterByBrand = (brandName) => {
     // });
     const temp = filteredCars.filter(car => { return car.Brand === brandName})
     console.log(temp);
+    filteredCars = temp;
+    return temp;
 }
 
 const filterPropertyEquals = (property, value) => {
+    console.log(value)
     const temp = filteredCars.filter(car => { return car[property] === value})
-    console.log(temp);  test = temp;
+    // console.log(temp);  test = temp;
+    console.table(temp.sort((a, b) => a.Body.localeCompare(b.Body)));
+    filteredCars = temp;
+    return temp;
 }
 
 const filterPropertyByInterval = (property, valueInterval) => {
@@ -25,11 +31,15 @@ const filterPropertyByInterval = (property, valueInterval) => {
         if(min <= car[property] && car[property] <= max)
             temp.push(car);
     });
-    console.log(temp);
+    console.table(temp.sort((a, b) => a.Body.localeCompare(b.Body)));
+    // console.log(temp);
+    filteredCars = temp;
+    return temp;
 }
 
 const filterPropertyByArray = (property, valueArray) => {
     const temp = new Array()
+    console.log(valueArray);
     filteredCars.forEach(car => {
         // console.log(car[property] + " - " + value) 
         valueArray.forEach(value => {
@@ -37,7 +47,10 @@ const filterPropertyByArray = (property, valueArray) => {
                 temp.push(car);
         });
     });
-    console.log(temp);
+    console.table(temp.sort((a, b) => a.Body.localeCompare(b.Body)));
+    // console.log(temp);
+    filteredCars = temp;
+    return temp;
 }
 
 module.exports = {
