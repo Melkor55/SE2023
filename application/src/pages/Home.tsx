@@ -4,9 +4,12 @@ import {
   Button,
   Container,
   CssBaseline,
+  Divider,
   Typography,
 } from "@mui/material"
+import { Stack } from "@mui/system"
 import { useNavigate } from "react-router-dom"
+import { SocialIcon } from "react-social-icons"
 
 const Home = () => {
   const navigate = useNavigate()
@@ -30,25 +33,31 @@ const Home = () => {
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 3,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h3">
               Car Picker App
             </Typography>
+            <Divider orientation="horizontal" sx={{ width: "100%" }} />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               onClick={handleClick}
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 8, mb: 4 }}
             >
               Try Now
             </Button>
           </Box>
+          <Stack sx={{justifyContent: 'center'}} direction="row" spacing={4}>
+            <SocialIcon url="https://www.facebook.com/" />
+            <SocialIcon url="https://www.instagram.com/" />
+            <SocialIcon url="https://www.twitter.com/" />
+          </Stack>
           <Box sx={{ mt: 8, mb: 4 }}>
             <Typography variant="body2" color="text.secondary" align="center">
               {"Copyright © "}

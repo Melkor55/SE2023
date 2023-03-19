@@ -21,12 +21,12 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }))
 
-export default function StickyFooter({ progress }: { progress: number }) {
+export default function StickyFooter() {
   return (
     <Box
       component="footer"
       sx={{
-        py: 3,
+        py: 5,
         px: 2,
         mt: "auto",
         backgroundColor: (theme) =>
@@ -36,9 +36,9 @@ export default function StickyFooter({ progress }: { progress: number }) {
       }}
     >
       <Container maxWidth="xl">
-        <Box sx={{ width: "100%" }}>
+        {/* <Box sx={{ width: "100%" }}>
           <BorderLinearProgress variant="determinate" value={progress} />
-        </Box>
+        </Box> */}
       </Container>
     </Box>
   )
