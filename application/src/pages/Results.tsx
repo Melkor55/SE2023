@@ -1,8 +1,62 @@
+import * as React from "react"
 import { Box, Container, Divider, Typography } from "@mui/material"
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import StickyFooter from "../components/Footer"
 
+import axios from "axios"
+
+const UserChoices = 
+{
+  "Brand": ["Lamborghini", "Audi", "Porsche", "Mercedes-Benz"],
+  "Body": "Two Seaters",
+  "Year": {"min": 2005, "max": 2022},
+  "Type": "Gasoline",
+  "TransmissionType": "Automated Manual",
+  "Horsepower": { "min": 120, "max": 700},
+  "Seats": 5,
+  "Doors": 4,
+  "Price": { "min": 100000, "max": 1500000}
+}
+
+// let car: Object;
+
 export default function ResultsPage() {
+  const [car, setCar] = React.useState({
+    "Id": 0,
+    "Brand": "",
+    "Model": "",
+    "Body": "",
+    "Year": 0,
+    "Type": "",
+    "TransmissionType": "",
+    "Horsepower": 0,
+    "Seats": 0,
+    "Doors": 0,
+    "Price": 0
+  })
+
+  const getCarOnLoad = () => {
+    axios.post('http://localhost:3005/inferenta', UserChoices)
+        .then(function (response) {
+            console.log(response.data);
+            const x = response.data;
+            console.log(x.Brand)
+            // setCar(previousState => { return {...previousState,...x}})
+            setCar(x)
+            // console.log(car)
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+        // console.log(car); 
+  }
+
+  React.useEffect(() => {
+    getCarOnLoad();
+    // console.log(car)
+  }, []);
+
   return (
     <Box
       sx={{
@@ -51,13 +105,13 @@ export default function ResultsPage() {
               <Typography sx={{ fontWeight: "bold", mr: 2 }}>
                 Brand name:{" "}
               </Typography>{" "}
-              <Typography>Toyota</Typography>
+              <Typography>{car.Brand}</Typography>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography sx={{ fontWeight: "bold", mr: 2 }}>
                 Model:{" "}
               </Typography>{" "}
-              <Typography>Supra</Typography>
+              <Typography>{car.Model}</Typography>
             </Box>
             <Divider
               orientation="horizontal"
@@ -65,37 +119,43 @@ export default function ResultsPage() {
             />
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography sx={{ fontWeight: "bold", mr: 2 }}>Year: </Typography>{" "}
-              <Typography>2020</Typography>
+              <Typography>{car.Year}</Typography>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography sx={{ fontWeight: "bold", mr: 2 }}>
                 Car body:{" "}
               </Typography>{" "}
-              <Typography>Toyota</Typography>
+              <Typography>{car.Body}</Typography>
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Typography sx={{ fontWeight: "bold", mr: 2 }}>
+                Type:{" "}
+              </Typography>{" "}
+              <Typography>{car.Type}</Typography>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography sx={{ fontWeight: "bold", mr: 2 }}>
                 Transmision type:{" "}
               </Typography>{" "}
-              <Typography>Automatic</Typography>
+              <Typography>{car.TransmissionType}</Typography>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography sx={{ fontWeight: "bold", mr: 2 }}>
                 Horsepower:{" "}
               </Typography>{" "}
-              <Typography>320</Typography>
+              <Typography>{car.Horsepower}</Typography>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography sx={{ fontWeight: "bold", mr: 2 }}>
                 Number of doors:{" "}
               </Typography>{" "}
-              <Typography>2</Typography>
+              <Typography>{car.Doors}</Typography>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography sx={{ fontWeight: "bold", mr: 2 }}>
                 Number of seats:{" "}
               </Typography>{" "}
-              <Typography>4</Typography>
+              <Typography>{car.Seats}</Typography>
             </Box>
             <Divider
               orientation="horizontal"
@@ -105,7 +165,7 @@ export default function ResultsPage() {
               <Typography sx={{ fontWeight: "bold", mr: 2 }}>
                 Price:{" "}
               </Typography>{" "}
-              <Typography>$46000</Typography>
+              <Typography>${car.Price.toLocaleString()}</Typography>
             </Box>
           </Box>
         </Container>
