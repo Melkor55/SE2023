@@ -26,6 +26,7 @@
     "react-social-icons": "^5.15.0",
     "styled-components": "^5.3.8",
     "typescript": "^4.4.2",
+    "unsplash-js": "^7.0.15",
     "web-vitals": "^2.1.0"
   },
   "scripts": {

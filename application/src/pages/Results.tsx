@@ -4,7 +4,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import StickyFooter from "../components/Footer"
 
 import axios from "axios"
-
+import { createApi } from "unsplash-js";
 const UserChoices = 
 {
   "Brand": ["Lamborghini", "Audi", "Porsche", "Mercedes-Benz"],
@@ -17,6 +17,7 @@ const UserChoices =
   "Doors": 4,
   "Price": { "min": 100000, "max": 1500000}
 }
+
 
 // let car: Object;
 
@@ -34,6 +35,7 @@ export default function ResultsPage() {
     "Doors": 0,
     "Price": 0
   })
+  const [carImageURL, setCarImageURL] = React.useState("");
 
   const getCarOnLoad = () => {
     axios.post('http://localhost:3005/inferenta', UserChoices)
@@ -56,6 +58,23 @@ export default function ResultsPage() {
     getCarOnLoad();
     // console.log(car)
   }, []);
+
+  React.useEffect(() => {
+    const unsplash = createApi({ accessKey: 'HnfZPxsReKNhYpXdVc5SmDKlxuA3k7q3E_jl6ld2oXc' });
+
+    unsplash.search
+      .getPhotos({
+        query: car.Model,
+        page: 1,
+        perPage: 10
+      })
+      .then(result=>{
+        let imageURL = result.response?.results.at(0)?.urls.raw;
+        // console.log(imageURL);
+        // console.log(result.response?.results);
+        setCarImageURL(imageURL+"");
+      });
+}, [car]);
 
   return (
     <Box
@@ -96,7 +115,7 @@ export default function ResultsPage() {
           }}
         >
           <Box sx={{ mr: 2, boxShadow: 3 }}>
-            <img src="supra-test.jpg" width="700px" height="450px" />
+            <img src={carImageURL} style={{maxHeight: "500px", maxWidth: "850px"}} />
           </Box>
           <Divider orientation="vertical" flexItem />
           <Box sx={{ ml: 2, width: "100%" }}>
