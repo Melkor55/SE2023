@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import { Stepper, Step, StepLabel, Button } from "@mui/material"
 import { Slider } from '@mui/material';
 
+import { useNavigate } from "react-router-dom"
 import "./styles.css"
 
 const steps : string[] = [
@@ -78,34 +79,27 @@ const choices = {
               'Small Sport Utility Vehicles'
             ],
     "Year": {"min": 2009, "max": 2022},
-    "Type": [
-              'Midsize Cars',
-              'Sport Utility Vehicles',
-              'Standard Pickup Trucks',
-              'Subcompact Cars',
-              'Midsize Station Wagons',
-              'Compact Cars',
-              'Large Cars',
-              'Cargo Vans',
-              'Passenger Vans',
-              'Sedan',
-              'Hatchback',
-              'Roadster',
-              'Two Seaters',
-              'Small Station Wagons',
-              'Coupe',
-              'Convertible',
-              'Minivan',
-              'Small Pickup Trucks',
-              'Station Wagon',
-              'Small Sport Utility Vehicles',
-            ],
+    "Type": [ 'Electric', 'Flex-Fuel', 'Diesel', 'Hybrid', 'Gasoline' ],
     "TransmissionType": [ 'Automatic', 'Manual', 'Direct Drive', 'Automated Manual' ],
     "Horsepower": {"min": 68, "max": 887},
     "Seats": [ 2, 5 ],
     "Doors": [ 2, 3, 4, 5 ],
     "Price": {"min": 11169, "max": 1228002},
 }
+
+interface UserChoices {
+  [x: string]: any; 
+  "Brand": string[],
+  "Body": string[],
+  "Year": {"min": number, "max": number},
+  "Type": string[],
+  "TransmissionType": string[],
+  "Horsepower": { "min": number, "max": number},
+  "Seats": number[],
+  "Doors": number[],
+  "Price": { "min": number, "max": number}
+}
+let userChoices = {} as UserChoices;
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -120,10 +114,12 @@ export default function QuestionsPage() {
   const [skipped, setSkipped] = React.useState(new Set<number>())
 
   const [value, setValue] = React.useState<number[]>([20, 37]);
-  const [selectedDiv, setSelectedDiv] = React.useState(-1);
+  const [selectedDiv, setSelectedDiv] = React.useState<number[]>([]);
+
+  const [carChoices, setCarChoices] = React.useState<UserChoices>(userChoices);
 
   const isStepOptional = (step: number) => {
-    return step === 1
+    return step === -1
   }
 
   const isStepSkipped = (step: number) => {
@@ -136,9 +132,33 @@ export default function QuestionsPage() {
       newSkipped = new Set(newSkipped.values())
       newSkipped.delete(activeStep)
     }
-
+    setSelectedDiv([]);
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
     setSkipped(newSkipped)
+
+    let choice = carChoices;
+    // console.log(carChoices)
+    // console.log(choice)
+    // safeGet(choices, steps[activeStep]) = 
+    if (activeStep === 0)
+    {
+      choice[steps[activeStep]] = [];
+      for (let i = 0; i < selectedDiv.length; i++) 
+      {
+        choice[steps[activeStep]][i] = safeGet(choices, steps[activeStep])[selectedDiv[i]];   
+      }
+    }
+    else if ([1,3,4,6,7].includes(activeStep))
+    {
+      choice[steps[activeStep]] = safeGet(choices, steps[activeStep])[selectedDiv[0]]; 
+    }
+    else if ([2,5,8].includes(activeStep))
+    {
+      choice[steps[activeStep]] = {min: value[0], max: value[1]};
+    }
+      
+    setCarChoices(choice)
+    // console.log(carChoices)
   }
 
   const handleBack = () => {
@@ -164,19 +184,40 @@ export default function QuestionsPage() {
     setActiveStep(0)
   }
 
-  const handleChange = (event: Event, newValue: number | number[]) => {
+  const handleChangeSlider = (event: Event, newValue: number | number[]) => {
+    console.log(newValue)
     setValue(newValue as number[]);
   };
 
-  function safeGet(object: {
-    [x: string]: any; Brand?: string[]; Body?: string[]; Year?: {
-    min: number // "Question 4",
-    ; max: number;
-    }; Type?: string[]; TransmissionType?: string[]; Horsepower?: {
-    min: number; max // "Question 9",
-    : number;
-    }; Seats?: number[]; Doors?: number[]; Price?: { min: number; max: number; };
-    }, key: string) 
+  const handleClickOnCard = (index: number) => {
+    // console.log(index); 
+    // console.log(selectedDiv); 
+    if(steps[activeStep] === "Brand")
+      if(!selectedDiv.includes(index)) 
+      {
+        // console.log(true);
+        setSelectedDiv((prevSelectedDiv)=>[...prevSelectedDiv,index])
+      } 
+      else 
+      {
+        // console.log(false);
+        setSelectedDiv(selectedDiv.filter(value => value !== index));
+      }
+    else
+      {
+        if(selectedDiv.includes(index))
+          setSelectedDiv([]);
+        else
+          setSelectedDiv([index]);
+      }
+  }
+
+  const handleClickShowResults = () => {
+    localStorage.setItem('UserChoices', JSON.stringify(carChoices));
+    navigate('/results');
+  }
+
+  function safeGet(object: UserChoices, key: string) 
       {
       if (key === 'constructor' && typeof object[key] === 'function') {
         return;
@@ -185,13 +226,17 @@ export default function QuestionsPage() {
       if (key == '__proto__') {
         return;
       }
-      return object[key];
+      return object[key] ;
    }
 
    React.useEffect(() => {
-    if (typeof safeGet(choices, steps[activeStep])[0] !== "string")
-      setValue([safeGet(choices, steps[activeStep]).min,safeGet(choices, steps[activeStep]).max])
+    if(safeGet(choices, steps[activeStep]))
+      if (typeof safeGet(choices, steps[activeStep])[0] !== "string" || typeof safeGet(choices, steps[activeStep])[0] !== "number")
+        setValue([safeGet(choices, steps[activeStep]).min,safeGet(choices, steps[activeStep]).max])
 }, [activeStep]);
+
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -234,7 +279,7 @@ export default function QuestionsPage() {
             })}
           </Stepper>
         </Container>
-        <Container sx={{boxShadow: 3, borderRadius: 2}}>
+        <Container sx={{boxShadow: 3, borderRadius: 2, display: "flex", flexDirection: "column"}}>
           {activeStep === steps.length ? (
             <React.Fragment>
               <Typography sx={{ mt: 2, mb: 1 }}>
@@ -243,6 +288,7 @@ export default function QuestionsPage() {
               <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                 <Box sx={{ flex: "1 1 auto" }} />
                 <Button onClick={handleReset}>Reset</Button>
+                <Button onClick={handleClickShowResults}>Show Results</Button>
               </Box>
             </React.Fragment>
           ) : (
@@ -252,48 +298,51 @@ export default function QuestionsPage() {
               </Typography>
               <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 {
-                  (typeof safeGet(choices, steps[activeStep])[0] === "string" ? 
+                  ((typeof safeGet(choices, steps[activeStep])[0] === "string" || typeof safeGet(choices, steps[activeStep])[0] === "number") ? 
                   safeGet(choices, steps[activeStep]).map((value: string,index: number) => 
                     (<Grid item xs={2} sm={4} md={4} key={index}>
-                      <div className={`card ${selectedDiv === index  ? " selected" : undefined}`} style={{cursor: "pointer"}} onClick={() => {console.log(value); setSelectedDiv(index)}} >
+                      <div className={`card ${selectedDiv.includes(index)  ? " selected" : undefined}`} style={{cursor: "pointer"}} onClick={() => handleClickOnCard(index)} >
                         <Item >{value}</Item>
                       </div>
                     </Grid>
                   ))
                   :
-                  (<Grid item xs={2} sm={4} md={4} key={1}>
+                  (<Grid sx={{ mt: 8, mb: 4, ml: 8, mr: 8 }} item xs={2} sm={6} md={12}>
                     <Slider
                         // {...setValue([23,100])}
                         getAriaLabel={() => `${steps[activeStep]} range`}
                         min={safeGet(choices, steps[activeStep]).min}
                         max={safeGet(choices, steps[activeStep]).max}
                         value={value}
-                        onChange={handleChange}
+                        onChange={handleChangeSlider}
                         valueLabelDisplay="on"
+                        valueLabelFormat={(value) => (steps[activeStep] === "Price") ? "$" + value.toLocaleString() : value}
                       />
                   </Grid>
                   ))
                 }
               </Grid>
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Button
-                  color="inherit"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 1 }}
-                >
-                  Back
-                </Button>
-                <Box sx={{ flex: "1 1 auto" }} />
-                {isStepOptional(activeStep) && (
-                  <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                    Skip
+              
+                <Box sx={{ display: "flex", flex: "1 1 auto", justify: "flex-end", alignItems: 'flex-end', flexDirection: "row", pt: 2, pb: 4 }}>
+                  <Button
+                    color="inherit"
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    sx={{ mr: 1, maxHeight: "30px" }}
+                  >
+                    Back
                   </Button>
-                )}
-                <Button onClick={handleNext}>
-                  {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                </Button>
-              </Box>
+                  <Box sx={{ flex: "1 1 auto", justify: "flex-bottom", justifyContent: "flex-end"}} />
+                  {isStepOptional(activeStep) && (
+                    <Button color="inherit" onClick={handleSkip} sx={{ mr: 1, heigh: "2%" }}>
+                      Skip
+                    </Button>
+                  )}
+                  <Button onClick={handleNext} disabled={selectedDiv.length === 0 && ![2,5,8].includes(activeStep) }>
+                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                  </Button>
+                </Box>
+              
             </React.Fragment>
           )}
         </Container>

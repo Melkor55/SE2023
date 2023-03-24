@@ -122,7 +122,7 @@ let getDB = async () => {
             carsForDB.forEach((car) => insertValuesIntoDB(db,car));
             // await getCarsFromDB(db);
             //console.table(DBcars.sort((a, b) => a.Body.localeCompare(b.Body)));
-            getCarsFieldFromDB(db, carFieldArray, "TransmissionType")
+            getCarsFieldFromDB(db, carFieldArray, "Type")
             return;
         } else if (err) {
             console.log("Getting error " + err);
@@ -225,7 +225,7 @@ function getCarsFieldFromDB(db, array, field) {     // to get all the options a 
         else
             exit(1);
         // console.table(array);
-        // console.dir(array, {'maxArrayLength': null});
+        console.dir(array, {'maxArrayLength': null});
         
     });    
 }

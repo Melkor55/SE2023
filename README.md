@@ -102,29 +102,7 @@ let carBody =
 let carYear = {"min": 2009, "max": 2022};
 ```
 ```javascript
-let carType =
-[
-  'Midsize Cars',
-  'Sport Utility Vehicles',
-  'Standard Pickup Trucks',
-  'Subcompact Cars',
-  'Midsize Station Wagons',
-  'Compact Cars',
-  'Large Cars',
-  'Cargo Vans',
-  'Passenger Vans',
-  'Sedan',
-  'Hatchback',
-  'Roadster',
-  'Two Seaters',
-  'Small Station Wagons',
-  'Coupe',
-  'Convertible',
-  'Minivan',
-  'Small Pickup Trucks',
-  'Station Wagon',
-  'Small Sport Utility Vehicles',
-]
+let carType = [ 'Electric', 'Flex-Fuel', 'Diesel', 'Hybrid', 'Gasoline' ]
 ```
 ```javascript
 let carTransmissionType = [ 'Automatic', 'Manual', 'Direct Drive', 'Automated Manual' ];
