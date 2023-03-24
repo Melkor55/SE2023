@@ -162,6 +162,7 @@ export default function QuestionsPage() {
   }
 
   const handleBack = () => {
+    setSelectedDiv([]);
     setActiveStep((prevActiveStep) => prevActiveStep - 1)
   }
 
@@ -285,9 +286,9 @@ export default function QuestionsPage() {
               <Typography sx={{ mt: 2, mb: 1 }}>
                 All steps completed - you&apos;re finished
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Box sx={{ display: "flex", flex: "1 1 auto", flexDirection: "row", justify: "flex-end", alignItems: 'flex-end', pt: 2, pb: 8 }}>
+                <Button sx={{ color: "red" }} onClick={handleReset}>Reset</Button>
                 <Box sx={{ flex: "1 1 auto" }} />
-                <Button onClick={handleReset}>Reset</Button>
                 <Button onClick={handleClickShowResults}>Show Results</Button>
               </Box>
             </React.Fragment>
@@ -311,9 +312,9 @@ export default function QuestionsPage() {
                     <Slider
                         // {...setValue([23,100])}
                         getAriaLabel={() => `${steps[activeStep]} range`}
+                        value={value}
                         min={safeGet(choices, steps[activeStep]).min}
                         max={safeGet(choices, steps[activeStep]).max}
-                        value={value}
                         onChange={handleChangeSlider}
                         valueLabelDisplay="on"
                         valueLabelFormat={(value) => (steps[activeStep] === "Price") ? "$" + value.toLocaleString() : value}
