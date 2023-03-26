@@ -1,13 +1,17 @@
 # SE2023
 
-## `npm install` to install the required packages(the dependencies from package.json)
+## Run backend :
+- ### `npm install` to install the required packages(the dependencies from package.json)
 
-- ### `cd inferenta` + `node inferenta.js` to run --> `inferenta` part
+- ### `npm start` to run
+---
+## Run frontend :
+- ### `cd application`
+  
+>- ### `npm install` or `yarn install`(if needed)
+- ### `yarn start` to run
 
-- ### `cd database` + `node database.js` to run --> `bazaCunostinte` part
-
-
-# **`npm start`** to run whole aplication(the backend)
+---
 
 - ## the *endpoint* for the app is : <[localhost:3005/inferenta](http://localhost:3005/inferenta/)>
 ---
