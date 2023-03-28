@@ -1,5 +1,16 @@
 # SE2023
 
+- ### Mita Daniel
+- ### Hanc Silviu-Alexandru
+- ### Serban Radu
+
+---
+### Algorithm : `forward-chaining`
+### Technologies : 
+- #### inferenta - `nodeJs` cu `node-rules`
+- #### bazaCunostinte - `nodeJs` cu `SQLite`
+- #### inferenta - `vueJs` cu `typescript` si `Material-UI(MUI)`
+---
 ## Run backend :
 - ### `npm install` to install the required packages(the dependencies from package.json)
 
@@ -13,12 +24,12 @@
 
 ---
 
-- ## the *endpoint* for the app is : <[localhost:3005/inferenta](http://localhost:3005/inferenta/)>
+- ## the *endpoint* for the backend is : <[localhost:3005/inferenta](http://localhost:3005/inferenta/)> - only used for the prontend to make requests
+
+- ## the *endpoint* for the frontend is : <[localhost:3000/home](http://localhost:3005/inferenta/)> - the endpoint the *user* needs to access in order to use the app
 ---
 
-> ## the aplication aims to find the best result for the given filters, meaning if will  
-> 
-> ## _**`STILL`**_ show a result even if _**`NOT ALL`**_ the filters match the user's selection
+> ## the aplication aims to find the best result for the given filters, meaning it will _**`STILL`**_ show a result even if _**`NOT ALL`**_ the filters match the user's selection
 
 ---
 - ### the *`Post`* request body should be like below :
